@@ -1,6 +1,7 @@
 using csharp_ecommerce.Data;
 using csharp_ecommerce.Examples;
 using csharp_ecommerce.Services.Category;
+using csharp_ecommerce.Services.Product;
 using csharp_ecommerce.Services.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
@@ -48,6 +49,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped<IUserInterface, UserService>();
 builder.Services.AddScoped<ICategoryInterface, CategoryService>();
+builder.Services.AddScoped<IProductInterface, ProductService>();
 
 var app = builder.Build();
 
