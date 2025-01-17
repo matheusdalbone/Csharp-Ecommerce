@@ -47,6 +47,11 @@ namespace csharp_ecommerce.Services.Category
             }
         }
 
+        public Task<ResponseModel<CategoryDTO>> DeleteCategory(int categoryId)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<ResponseModel<List<CategoryModel>>> FindAllCategories()
         {
             ResponseModel<List<CategoryModel>> response = new ResponseModel<List<CategoryModel>>();
@@ -72,6 +77,11 @@ namespace csharp_ecommerce.Services.Category
         }
 
         public Task<ResponseModel<CategoryModel>> FindById(int categoryId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<ResponseModel<CategoryDTO>> UpdateCategory(int categoryId, CategoryDTO categoryDTO)
         {
             throw new NotImplementedException();
         }

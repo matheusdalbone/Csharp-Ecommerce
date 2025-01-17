@@ -39,5 +39,21 @@ namespace csharp_ecommerce.Controllers
 
             return Ok(product);
         }
+
+        [HttpDelete("/delete-product/{productId}")]
+        public async Task<ActionResult<ResponseModel<ProductDTO>>> DeleteProduct(int productId)
+        { 
+            var removedProduct = await _productInterface.DeleteProduct(productId);
+
+            return Ok(removedProduct);
+        }
+
+        [HttpPut("/update-product/{productId}")]
+        public async Task<ActionResult<ResponseModel<ProductDTO>>> UpdateProduct(int productId, ProductDTO productDTO)
+        {
+            var updatedProduct = await _productInterface.UpdateProduct(productId, productDTO);
+
+            return Ok(updatedProduct);
+        }
     }
 }

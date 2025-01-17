@@ -98,5 +98,66 @@ namespace csharp_ecommerce.Services.Product
             }
             
         }
+
+        public async Task<ResponseModel<ProductDTO>> UpdateProduct(int productId, ProductDTO productDTO)
+        { 
+            ResponseModel<ProductDTO> response = new ResponseModel<ProductDTO>();
+
+            try
+            {
+                var dbProduct = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+
+                dbProduct.Price = productDTO.Price;
+                dbProduct.Stock = productDTO.Stock;
+                dbProduct.Name = productDTO.Name;
+                dbProduct.Description = productDTO.Description;
+                dbProduct.CategoryId = productDTO.CategoryId;
+                dbProduct.ImageUrl = productDTO.ImageUrl;
+
+                await _context.SaveChangesAsync();
+
+                response.Value = productDTO;
+                response.Message = "Product updated successfuly";
+                response.IsError = false;
+
+                return response;
+            }
+            catch (Exception ex)
+            { 
+                response.Value = null;
+                response.Message = ex.Message;
+                response.IsError = true;
+
+                return response;
+            }
+        }
+
+        public async Task<ResponseModel<ProductDTO>> DeleteProduct(int productId)
+        {
+            ResponseModel<ProductDTO> response = new ResponseModel<ProductDTO>();
+
+            try
+            {
+                var dbProduct = await _context.Products.FirstOrDefaultAsync(p => p.Id == productId);
+
+                _context.Remove(dbProduct);
+                await _context.SaveChangesAsync();
+
+                response.Value = null;
+                response.Message = $"Product id: {dbProduct.Id}, Name: {dbProduct.Name} removed successfuly";
+                response.IsError = false;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Value = null;
+                response.Message = ex.Message;
+                response.IsError = true;
+
+                return response;
+            }
+
+        }
     }
 }
