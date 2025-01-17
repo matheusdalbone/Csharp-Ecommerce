@@ -47,11 +47,6 @@ namespace csharp_ecommerce.Services.Category
             }
         }
 
-        public Task<ResponseModel<CategoryDTO>> DeleteCategory(int categoryId)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<ResponseModel<List<CategoryModel>>> FindAllCategories()
         {
             ResponseModel<List<CategoryModel>> response = new ResponseModel<List<CategoryModel>>();
@@ -76,14 +71,83 @@ namespace csharp_ecommerce.Services.Category
             }
         }
 
-        public Task<ResponseModel<CategoryModel>> FindById(int categoryId)
+        public async Task<ResponseModel<CategoryModel>> FindCategoryById(int categoryId)
         {
-            throw new NotImplementedException();
+            ResponseModel<CategoryModel> response = new ResponseModel<CategoryModel>();
+
+            try
+            {
+                var category =  _context.Categories.FirstOrDefault(c => c.Id == categoryId);
+
+                response.Value = category;
+                response.Message = "Category found successfuly";
+                response.IsError = false;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Value = null;
+                response.Message = ex.Message;
+                response.IsError = true;
+
+                return response;
+            }
+        }
+        public async Task<ResponseModel<CategoryDTO>> DeleteCategory(int categoryId)
+        {
+            ResponseModel<CategoryDTO> response = new ResponseModel<CategoryDTO>();
+
+            try
+            {
+                var dbCategory = _context.Categories.FirstOrDefault(c => c.Id == categoryId);
+
+                _context.Remove(dbCategory);
+                await _context.SaveChangesAsync();
+
+                response.Value = null;
+                response.Message = $"Category: {dbCategory.Id}, Name: {dbCategory.Name} removed successfuly";
+                response.IsError = false;
+
+                return response;
+            }
+            catch (Exception ex)
+            {
+                response.Value = null;
+                response.Message = ex.Message;
+                response.IsError = true;
+
+                return response;
+            }
         }
 
-        public Task<ResponseModel<CategoryDTO>> UpdateCategory(int categoryId, CategoryDTO categoryDTO)
+        public async Task<ResponseModel<CategoryDTO>> UpdateCategory(int categoryId, CategoryDTO categoryDTO)
         {
-            throw new NotImplementedException();
+            ResponseModel<CategoryDTO> response = new ResponseModel<CategoryDTO>();
+
+            try
+            {
+                var dbCategory = _context.Categories.FirstOrDefault(c => c.Id == categoryId);
+
+                dbCategory.Name = categoryDTO.Name;
+                dbCategory.Description = categoryDTO.Description;
+
+                await _context.SaveChangesAsync();
+
+                response.Value = categoryDTO;
+                response.Message = "Category updated successfuly";
+                response.IsError = false;
+
+                return response;
+            }
+            catch (Exception ex)
+            { 
+                response.Value = null;
+                response.Message = ex.Message;
+                response.IsError = true;
+
+                return response;
+            }
         }
     }
 }
